@@ -21,11 +21,11 @@ public:
         ans.push_back(value);
     }
 
-    void output(){
+    void output(string prefix = "", string suffix = ""){
         int i;
         if(ans.size() > 0){
-            rep(i, ans.size() - 1)cout << ans[i] << ',';
-            cout << ans[i] << '\n';
+            rep(i, ans.size() - 1)cout << prefix << ans[i] << suffix << ',';
+            cout << prefix << ans[i] << suffix << '\n';
         }
     }
 };
