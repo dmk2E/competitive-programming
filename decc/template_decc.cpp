@@ -23,8 +23,10 @@ public:
 
     void output(){
         int i;
-        rep(i, ans.size() - 1)cout << ans[i] << ',';
-        cout << ans[i] << '\n';
+        if(ans.size() > 0){
+            rep(i, ans.size() - 1)cout << ans[i] << ',';
+            cout << ans[i] << '\n';
+        }
     }
 };
 
