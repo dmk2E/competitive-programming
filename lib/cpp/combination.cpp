@@ -44,6 +44,14 @@ public:
         for(i = this -> max_num - 1;i >= 0;i--)inv_fact[i] = (inv_fact[i + 1] * (i + 1)) % this -> mod;
     }
 
+    /// @brief 階乗の逆元を取得する
+    /// @param num 階乗の値
+    /// @return 階乗の逆元を mod で割った余り
+    ll getInvFact(int num){
+        assert(num < inv_fact.size());
+        return this -> inv_fact[num];
+    }
+
     /// @brief N個の中からr個だけ選ぶ組合せの総数を求める
     /// @param n 選択肢の数
     /// @param r 選ぶ数
