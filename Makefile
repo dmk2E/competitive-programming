@@ -1,4 +1,4 @@
-.PHONY: close show-testcase random-test my-test-command
+.PHONY: close show-testcase random-test my-test-command create-files prepare-for-contest
 
 MAKEFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 
@@ -122,3 +122,49 @@ my-test-command:
 						 TARGET_ALGO_FILE_PATH="./ABC459_E.cpp" \
 						 TRY_COUNT=100 \
 						 -f "$(MAKEFILE_PATH)"
+
+create-files: 
+#	引数が空でないか
+#	 コピー元のテンプレートファイルへのパス
+	@if [ -z "$(TEMPLATE_FILE_PATH)" ]; then \
+		echo "TEMPLATE_FILE_PATH is not set!"; \
+		exit 1; \
+	fi;
+
+#	 接頭語
+	@if [ -z "$(PREFIX)" ]; then \
+		echo "PREFIX is not set!"; \
+		exit 1; \
+	fi;
+
+#	 接尾語を空白区切りで連結した文字列
+	@if [ -z "$(SUFFIXES)" ]; then \
+		echo "PREFIX is not set!"; \
+		exit 1; \
+	fi;
+
+#	 拡張子
+	@if [ -z "$(EXTENSION)" ]; then \
+		echo "EXTENSION is not set!"; \
+		exit 1; \
+	fi;
+
+#	テンプレートファイルが存在するか否か
+	@if [ ! -f "$(TEMPLATE_FILE_PATH)" ]; then \
+		echo "TEMPLATE_FILE_PATH doesn't exist!"; \
+		exit 1; \
+	fi;
+
+#	本処理
+	@for suffix in $(SUFFIXES); do \
+		file_name="$(PREFIX)_$${suffix}.$(EXTENSION)"; \
+		echo "$${file_name} is created!"; \
+		cp "$(TEMPLATE_FILE_PATH)" "./$${file_name}"; \
+	done;
+
+prepare-for-contest: 
+	@$(MAKE) create-files TEMPLATE_FILE_PATH='./templates/procon2.cpp' \
+						  PREFIX='ABC460' \
+						  SUFFIXES='A B C D E' \
+						  EXTENSION='cpp' \
+						  -f "$(MAKEFILE_PATH)"
