@@ -158,13 +158,15 @@ create-files:
 #	本処理
 	@for suffix in $(SUFFIXES); do \
 		file_name="$(PREFIX)_$${suffix}.$(EXTENSION)"; \
-		echo "$${file_name} is created!"; \
-		cp "$(TEMPLATE_FILE_PATH)" "./$${file_name}"; \
+		if [ ! -f $${file_name} ]; then \
+			echo "$${file_name} is created!"; \
+			cp "$(TEMPLATE_FILE_PATH)" "./$${file_name}"; \
+		fi; \
 	done;
 
 prepare-for-contest: 
 	@$(MAKE) create-files TEMPLATE_FILE_PATH='./templates/procon2.cpp' \
-						  PREFIX='ABC460' \
+						  PREFIX='ABC467' \
 						  SUFFIXES='A B C D E' \
 						  EXTENSION='cpp' \
 						  -f "$(MAKEFILE_PATH)"
