@@ -23,6 +23,10 @@ close:
 		rm ./naive.out; \
 	fi
 
+	@if [ -f ./testcase.out ]; then \
+		rm ./testcase.out; \
+	fi
+
 
 show-testcase: 
 	@echo "-------Input-------"; \
@@ -37,50 +41,50 @@ show-testcase:
 
 random-test: 
 #	RANDOM_TESTCASE_GEN_FILE_PATH の引数がセットされているか判定
-	@if [ -z "$${RANDOM_TESTCASE_GEN_FILE_PATH}" ]; then \
+	@if [ -z "$(RANDOM_TESTCASE_GEN_FILE_PATH)" ]; then \
 		echo "RANDOM_TESTCASE_GEN_FILE_PATH is not set"; \
 		exit 1; \
 	fi; 
 
 #	NAIVE_ALGO_FILE_PATH の引数がセットされているか判定
-	@if [ -z "$${NAIVE_ALGO_FILE_PATH}" ]; then \
+	@if [ -z "$(NAIVE_ALGO_FILE_PATH)" ]; then \
 		echo "NAIVE_ALGO_FILE_PATH is not set"; \
 		exit 1; \
 	fi; 
 
 #	TARGET_ALGO_FILE_PATH の引数がセットされているか判定
-	@if [ -z "$${TARGET_ALGO_FILE_PATH}" ]; then \
+	@if [ -z "$(TARGET_ALGO_FILE_PATH)" ]; then \
 		echo "TARGET_ALGO_FILE_PATH is not set"; \
 		exit 1; \
 	fi; 
 
 #	RANDOM_TESTCASE_GEN_FILE_PATH の引数がセットされているか判定
-	@if [ ! -f "$${RANDOM_TESTCASE_GEN_FILE_PATH}" ]; then \
+	@if [ ! -f "$(RANDOM_TESTCASE_GEN_FILE_PATH)" ]; then \
 		echo "RANDOM_TESTCASE_GEN_FILE_PATH doesn't exist"; \
 		exit 1; \
 	fi; 
 
 #	NAIVE_ALGO_FILE_PATH の引数がセットされているか判定
-	@if [ ! -f "$${NAIVE_ALGO_FILE_PATH}" ]; then \
+	@if [ ! -f "$(NAIVE_ALGO_FILE_PATH)" ]; then \
 		echo "NAIVE_ALGO_FILE_PATH doesn't exist"; \
 		exit 1; \
 	fi; 
 
 #	TARGET_ALGO_FILE_PATH の引数がセットされているか判定
-	@if [ ! -f "$${TARGET_ALGO_FILE_PATH}" ]; then \
+	@if [ ! -f "$(TARGET_ALGO_FILE_PATH)" ]; then \
 		echo "TARGET_ALGO_FILE_PATH doesn't exist"; \
 		exit 1; \
 	fi;
 
 #   TRY_COUNT 回だけテストを開始
 #	 RANDOM_TESTCASE_GEN_FILE_PATH が "cpp" であるか，"py"であるかで場合分け
-	@g++ "$${TARGET_ALGO_FILE_PATH}" -o target.out; \
-	g++ "$${NAIVE_ALGO_FILE_PATH}" -o naive.out; \
+	@g++ "$(TARGET_ALGO_FILE_PATH)" -o target.out; \
+	g++ "$(NAIVE_ALGO_FILE_PATH)" -o naive.out; \
 	\
-	case "$${RANDOM_TESTCASE_GEN_FILE_PATH}" in \
+	case "$(RANDOM_TESTCASE_GEN_FILE_PATH)" in \
 		*.cpp) \
-			g++ "$${RANDOM_TESTCASE_GEN_FILE_PATH}" -o ./testcase.out; \
-			for _ in $$(seq 1 "$${TRY_COUNT}"); do \
+			g++ "$(RANDOM_TESTCASE_GEN_FILE_PATH)" -o ./testcase.out; \
+			for _ in $$(seq 1 "$(TRY_COUNT)"); do \
 				./testcase.out > ./random_input.txt; \
 				\
 				./target.out < ./random_input.txt > ./target_output.txt; \
@@ -97,7 +101,7 @@ random-test:
 			done; \
 			;; \
 		*.py) \
-			for _ in $$(seq 1 "$${TRY_COUNT}"); do \
+			for _ in $$(seq 1 "$(TRY_COUNT)"); do \
 				python "$${RANDOM_TESTCASE_GEN_FILE_PATH}" > ./random_input.txt; \
 				\
 				./target.out < ./random_input.txt > ./target_output.txt; \
@@ -117,10 +121,10 @@ random-test:
 	$(MAKE) close -f "$(MAKEFILE_PATH)"; \
 
 my-test-command: 
-	@$(MAKE) random-test RANDOM_TESTCASE_GEN_FILE_PATH="./ABC459_E_generate.cpp" \
-						 NAIVE_ALGO_FILE_PATH="./ABC459_E_naive.cpp" \
-						 TARGET_ALGO_FILE_PATH="./ABC459_E.cpp" \
-						 TRY_COUNT=100 \
+	@$(MAKE) random-test RANDOM_TESTCASE_GEN_FILE_PATH="./ABC477_D_generate.cpp" \
+						 NAIVE_ALGO_FILE_PATH="./ABC477_D_naive.cpp" \
+						 TARGET_ALGO_FILE_PATH="./ABC477_D.cpp" \
+						 TRY_COUNT=1000 \
 						 -f "$(MAKEFILE_PATH)"
 
 create-files: 
@@ -166,7 +170,7 @@ create-files:
 
 prepare-for-contest: 
 	@$(MAKE) create-files TEMPLATE_FILE_PATH='./templates/procon2.cpp' \
-						  PREFIX='ABC467' \
+						  PREFIX='ABC477' \
 						  SUFFIXES='A B C D E' \
 						  EXTENSION='cpp' \
 						  -f "$(MAKEFILE_PATH)"
